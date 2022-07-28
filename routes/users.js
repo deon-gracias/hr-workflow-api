@@ -1,11 +1,10 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const { } = require("../controllers/users")
-
+const {} = require("../controllers/users");
 
 router.get("/", async (req, res, next) =>
-    res.status(200).send({ message: "Users PATH" })
-)
+  res.status(200).send({ message: "Users PATH" })
+);
 
-module.exports = router
+module.exports = router;
