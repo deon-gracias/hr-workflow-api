@@ -13,3 +13,13 @@ services:
       - 3000:3000
     volumes:
       - .:/usr/src/app
+  hrworkflowapi-mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - data:/data/db
+    command: mongod --quiet --logpath /dev/null
+
+volumes:
+  data:
