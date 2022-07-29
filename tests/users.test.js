@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../app");
+const { deleteAllUsers } = require("../controllers/users");
 const { connectToDb, disconnectFromDb } = require("../lib/db");
 
 describe("Users", () => {
@@ -8,6 +9,7 @@ describe("Users", () => {
   });
 
   afterAll(() => {
+    deleteAllUsers();
     disconnectFromDb();
   });
 
@@ -18,6 +20,8 @@ describe("Users", () => {
     firstname: "John",
     lastname: "Doe",
   };
+
+  let createdUser = {};
 
   // Check if server is working
   it("should receive 200", async () => {
@@ -33,9 +37,14 @@ describe("Users", () => {
   it("should create user", async () => {
     const res = await request(app).post("/users/signup").send(user).expect(201);
 
-    user = res.body;
+    createdUser = res.body;
 
-    return res;
+    return expect(createdUser).toEqual(
+      expect.objectContaining({
+        email: createdUser.email,
+        username: createdUser.username,
+      })
+    );
   });
 
   // Find User by email
@@ -45,23 +54,41 @@ describe("Users", () => {
       .send({ email: user.email })
       .expect(200);
 
-    return res;
+    return expect(res.body).toEqual(
+      expect.objectContaining({
+        email: createdUser.email,
+        username: createdUser.username,
+      })
+    );
   });
 
   // Find User by Id
   it("should find user by id", async () => {
-    const res = await request(app).get(`/users/${user._id}`).send().expect(200);
+    const res = await request(app)
+      .get(`/users/${createdUser._id}`)
+      .send()
+      .expect(200);
 
-    return res;
+    return expect(res.body).toEqual(
+      expect.objectContaining({
+        email: createdUser.email,
+        username: createdUser.username,
+      })
+    );
   });
 
   // Delete User by Id
   it("should delete user by id", async () => {
     const res = await request(app)
-      .delete(`/users/${user._id}`)
+      .delete(`/users/${createdUser._id}`)
       .send()
       .expect(200);
 
-    return res;
+    return expect(res.body).toEqual(
+      expect.objectContaining({
+        email: createdUser.email,
+        username: createdUser.username,
+      })
+    );
   });
 });

@@ -36,4 +36,9 @@ async function deleteUser(req, res, next) {
   return res.status(200).send(deletedUser);
 }
 
-module.exports = { createUser, getUser, deleteUser };
+// For debugging purposes
+async function deleteAllUsers() {
+  await User.deleteMany({});
+}
+
+module.exports = { createUser, getUser, deleteUser, deleteAllUsers };
