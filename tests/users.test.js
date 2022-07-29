@@ -1,7 +1,16 @@
 const request = require("supertest");
 const app = require("../app");
+const { connectToDb, disconnectFromDb } = require("../lib/db");
 
 describe("Users", () => {
+  beforeAll(() => {
+    connectToDb();
+  });
+
+  afterAll(() => {
+    disconnectFromDb();
+  });
+
   let user = {
     email: "johndoe@mail.com",
     password: "johndoe",
