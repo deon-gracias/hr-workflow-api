@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "test": "jest --watchAll --verbose"
+    "test": "jest --watchAll --verbose",
+    "docker:dev": "docker compose up hrworkflowapi",
+    "docker:test": "docker compose up hrworkflowapi-test"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
