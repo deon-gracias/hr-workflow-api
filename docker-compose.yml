@@ -8,18 +8,22 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: development
+      MONGO_URI: mongodb://hrworkflowdb:27017/hrworkflowdb
+    # command: [ 'npm', 'test' ]
     command: [ 'npm', 'run', 'dev' ]
     ports:
       - 5000:5000
     volumes:
       - .:/usr/src/app
-  hrworkflowapi-mongo:
+    links:
+      - hrworkflowdb
+  hrworkflowdb:
     image: mongo:latest
     ports:
       - 27017:27017
     volumes:
-      - data:/data/db
+      - hrworkflow-data:/data/db
     command: mongod --quiet --logpath /dev/null
 
 volumes:
-  data:
+  hrworkflow-data:
