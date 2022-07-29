@@ -1,6 +1,21 @@
 version: '3.4'
 
 services:
+  hrworkflowapi-test:
+    image: hrworkflowapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+      MONGO_URI: mongodb://hrworkflowdb:27017/hrworkflowdb
+    command: [ 'npm', 'test' ]
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/usr/src/app
+    links:
+      - hrworkflowdb
   hrworkflowapi:
     image: hrworkflowapi
     build:
@@ -9,7 +24,6 @@ services:
     environment:
       NODE_ENV: development
       MONGO_URI: mongodb://hrworkflowdb:27017/hrworkflowdb
-    # command: [ 'npm', 'test' ]
     command: [ 'npm', 'run', 'dev' ]
     ports:
       - 5000:5000
