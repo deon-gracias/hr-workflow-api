@@ -8,8 +8,8 @@ describe("Users", () => {
     connectToDb();
   });
 
-  afterAll(() => {
-    deleteAllUsers();
+  afterAll(async () => {
+    await deleteAllUsers();
     disconnectFromDb();
   });
 
