@@ -28,4 +28,11 @@ describe("Users", () => {
 
     return res;
   });
+
+  // Find User
+  it("should create user", async () => {
+    const res = await request(app).get("/users/signin").send(user).expect(200);
+
+    return res;
+  });
 });

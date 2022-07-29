@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser } = require("../controllers/users");
+const { createUser, getUser, deleteUser } = require("../controllers/users");
 const router = express.Router();
 
 router.get("/", async (req, res, next) =>
@@ -7,5 +7,9 @@ router.get("/", async (req, res, next) =>
 );
 
 router.post("/signup", createUser);
+
+router.get("/signin", getUser);
+
+router.get("/:id", getUser);
 
 module.exports = router;
