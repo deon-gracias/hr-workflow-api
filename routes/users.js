@@ -12,4 +12,6 @@ router.get("/signin", getUser);
 
 router.get("/:id", getUser);
 
+router.delete("/:id", deleteUser);
+
 module.exports = router;

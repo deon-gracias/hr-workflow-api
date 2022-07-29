@@ -27,5 +27,14 @@ async function getUser(req, res, next) {
   return res.status(200).send(user);
 }
 
+async function deleteUser(req, res, next) {
+  const deletedUser = await User.findByIdAndDelete(req.params.id);
 
-module.exports = { createUser, getUser };
+  if (!deletedUser) return res.status(404).send({ message: "User not found" });
+
+  delete deletedUser.password;
+
+  return res.status(200).send(deletedUser);
+}
+
+module.exports = { createUser, getUser, deleteUser };

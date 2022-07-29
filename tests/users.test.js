@@ -2,7 +2,7 @@ const request = require("supertest");
 const app = require("../app");
 
 describe("Users", () => {
-  const user = {
+  let user = {
     email: "johndoe@mail.com",
     password: "johndoe",
     username: "johndoe",
@@ -24,14 +24,34 @@ describe("Users", () => {
   it("should create user", async () => {
     const res = await request(app).post("/users/signup").send(user).expect(201);
 
-    console.log(res);
+    user = res.body;
 
     return res;
   });
 
-  // Find User
-  it("should create user", async () => {
-    const res = await request(app).get("/users/signin").send(user).expect(200);
+  // Find User by email
+  it("should find user by email", async () => {
+    const res = await request(app)
+      .get("/users/signin")
+      .send({ email: user.email })
+      .expect(200);
+
+    return res;
+  });
+
+  // Find User by Id
+  it("should find user by id", async () => {
+    const res = await request(app).get(`/users/${user._id}`).send().expect(200);
+
+    return res;
+  });
+
+  // Delete User by Id
+  it("should delete user by id", async () => {
+    const res = await request(app)
+      .delete(`/users/${user._id}`)
+      .send()
+      .expect(200);
 
     return res;
   });
