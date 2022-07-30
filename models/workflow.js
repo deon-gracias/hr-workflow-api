@@ -4,6 +4,7 @@ const workflowSchema = new Schema({
   email: { type: String, unique: true, required: true },
   name:{ type:String, required:true},
 //   a parameter to refer forms
+  form_id : {type:Schema.Types.ObjectId},
   approval:{ type:Boolean, required:true},
 
 });
