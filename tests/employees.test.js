@@ -53,4 +53,56 @@ describe("Employees", () => {
 
     return expect(res.body).toEqual(expect.objectContaining(onboardEmployee));
   });
+
+  let leave = {
+    from: Date.now(),
+    to: new Date(Date.now() + 1),
+    type: "Personal",
+  };
+
+  it("should apply leave", async () => {
+    const res = await request(app).post("/employees/leaves/apply").send(leave);
+
+    leave._id = res.body._id;
+
+    return expect(res.body).toEqual(
+      expect.objectContaining({
+        from: expect.any(String),
+        to: expect.any(String),
+        type: expect.any(String),
+        approved: false,
+      })
+    );
+  });
+
+  it("should get leaves", async () => {
+    const res = await request(app).get("/employees/leaves").send();
+
+    return expect(res.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          from: expect.any(String),
+          to: expect.any(String),
+          type: expect.any(String),
+          approved: false,
+        }),
+      ])
+    );
+  });
+
+  it("should approve leave", async () => {
+    const res = await request(app)
+      .patch(`/employees/leaves/approve/${leave._id}`)
+      .send();
+
+    return expect(res.body).toEqual(
+      expect.objectContaining({
+        _id: leave._id,
+        from: expect.any(String),
+        to: expect.any(String),
+        type: expect.any(String),
+        approved: true,
+      })
+    );
+  });
 });

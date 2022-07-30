@@ -1,3 +1,4 @@
+const Leave = require("../models/leaves");
 const Onboard = require("../models/onboard");
 
 // Create Onboard
@@ -23,8 +24,46 @@ async function updateOnboard(req, res, next) {
   return res.status(200).send(employeeOnboarded);
 }
 
+// Delete all onboards
 async function deleteAllOnboards() {
   await Onboard.deleteMany({});
 }
 
-module.exports = { createOnboard, updateOnboard, deleteAllOnboards };
+// Get Leaves
+async function getLeaves(req, res, next) {
+  const approvedFilter = { approved: !!req.body.approved };
+
+  const leaves = await Leave.find({ ...approvedFilter });
+
+  res.status(200).send(leaves);
+}
+
+// Apply for leave
+async function createLeave(req, res, next) {
+  const leave = new Leave(req.body);
+  const createdLeave = await leave.save();
+
+  if (!createdLeave) res.status(401).send({ message: "Couldn't create leave" });
+
+  return res.status(201).send(createdLeave);
+}
+
+// Approve Leave
+async function approveLeave(req, res, next) {
+  const updatedLeave = await Leave.findByIdAndUpdate(
+    req.params.id,
+    { approved: true },
+    { new: true }
+  );
+
+  return res.status(200).send(updatedLeave);
+}
+
+module.exports = {
+  createOnboard,
+  updateOnboard,
+  deleteAllOnboards,
+  createLeave,
+  getLeaves,
+  approveLeave,
+};
